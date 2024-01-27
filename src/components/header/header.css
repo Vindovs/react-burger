@@ -1,0 +1,27 @@
+
+.header {
+   box-sizing: border-box;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #282c34; 
+    color: white;
+    padding: 0 20px;
+  }  
+ 
+  
+  .navigation {
+    display: flex;
+    align-items: center;
+  }
+  .navigation > div {
+    margin-right: 8px; 
+  }
+  
+  .icon {
+    display: flex;
+    align-items: center;
+  }
+  
+  
