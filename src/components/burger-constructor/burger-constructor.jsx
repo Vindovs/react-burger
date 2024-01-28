@@ -1,10 +1,9 @@
-
 import React, { useState } from 'react';
 import { ConstructorElement, CurrencyIcon, Button,CheckMarkIcon  } from '@ya.praktikum/react-developer-burger-ui-components'
 import  data  from '../../utils/data'
 import styles from './burger-constructor.module.css';
-import Modal from '../modal/modal'
-import Order from './order/order'
+import Modal from '../modal/modal';
+import Order from './order/order';
 
 function BurgerConstructor() {
   const [isModalOpen, setIsModalOpen] = useState(false);
