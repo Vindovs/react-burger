@@ -3,7 +3,7 @@ import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
 import PropTypes from 'prop-types';
 import styles from './burger-ingridients.module.css';
 import ContainerIngr from './container-ingr';
-
+import { DataType } from '../../utils/types'
 
 function BurgerIngredients({ data }) {
 
@@ -15,7 +15,7 @@ function BurgerIngredients({ data }) {
   const filteredData = data.filter(item => item.type === current)
   console.log('filteredData :', filteredData)
   return (
-    <main style={{ gridArea: 'main', width: '70%' }}>
+    <main style={{ gridArea: 'main', width: '75%' }}>
       <div className="ml-2">
         <h1 style={{ textAlign: 'start' }} className="mt-8 mb-5">Соберите бургер</h1>
         <div >
@@ -45,11 +45,7 @@ function BurgerIngredients({ data }) {
 }
 
 BurgerIngredients.propTypes = {
-  data: PropTypes.arrayOf(
-    PropTypes.shape({
-      type: PropTypes.string.isRequired,
-    })
-  ).isRequired,
+  data: PropTypes.arrayOf(DataType)
 };
 
 export default BurgerIngredients;

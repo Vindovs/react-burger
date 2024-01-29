@@ -20,7 +20,7 @@ function BurgerConstructor() {
 
     return (
       <div  className={`mt-20 mr-2`}   >
-           <div className={`${styles.scroll} custom-scroll`} style={{gridArea:'sidebar', display: 'flex', flexDirection: 'column', gap: '10px'}}>
+           <div className={`${styles.scroll} custom-scroll`} style={{gridArea:'sidebar', display: 'flex', flexDirection: 'column', gap: '10px',width: '110%'}}>
             {data.map((item) =>
                 <ConstructorElement
                 key={item.key}

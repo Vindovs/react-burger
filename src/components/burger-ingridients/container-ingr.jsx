@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 import Modal from '../modal/modal'
 import Ingridient from './ingridient'
+import { DataType } from '../../utils/types'
+import styles from './burger-ingridients.module.css';
 import PropTypes from 'prop-types';
+import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components'
+
 
 const ContainerIngr = ({ ingridients }) => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedIngredient, setSelectedIngredient] = useState(null);
-
 
   const openModal = (item) => {
     console.log(1);
@@ -23,10 +26,11 @@ const ContainerIngr = ({ ingridients }) => {
   return (
     <>
       {ingridients.map((item, index) => (
-        <div onClick={() => openModal(item)} key={item._id} style={{ cursor: 'pointer', flexBasis: 'calc(45% - 28px)', border: '1px solid #ccc', margin: '5px', background: '#282c34' }}>
-          <img src={item.image} alt={item.name} style={{ maxWidth: '90px', maxHeight: '90px' }} />
-          <p>{item.name}</p>
-          <p>Price: {item.price}</p>
+        <div className={styles.ingridient} onClick={() => openModal(item)} key={item._id} >
+          <img src={item.image} alt={item.name} />
+          
+          <p style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }} className="text text_type_main-medium price">{item.price}<CurrencyIcon /></p>
+          <p className="text text_type_main-default">{item.name}</p>
         </div>
       ))}
       {isModalOpen && (<Modal onClose={closeModal} ><Ingridient ingredient={selectedIngredient} /></Modal>)}
@@ -35,14 +39,7 @@ const ContainerIngr = ({ ingridients }) => {
 };
 
 ContainerIngr.propTypes = {
-  ingridients: PropTypes.arrayOf(
-    PropTypes.shape({
-      _id: PropTypes.string.isRequired,
-      image: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      price: PropTypes.number.isRequired,
-    })
-  ).isRequired,
+  ingridients: PropTypes.arrayOf(DataType)
 };
 
 export default ContainerIngr;
