@@ -1,7 +1,7 @@
 import { useRef, useState} from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
 import PropTypes from 'prop-types';
-import styles from './burger-ingridients.module.css';
+import styles from './burger-ingredients.module.css';
 import Container from './container';
 import { DataType } from '../../utils/types'
 import { useSelector } from 'react-redux';
@@ -53,9 +53,9 @@ function BurgerIngredients() {
         </div>
         <div className={`${styles.scroll} custom-scroll`} onScroll={() => setTab()}  >
           <div className={styles.container}>
-            {<Container ref={bunsRef} ingridients={buns} />}
-            {<Container  ref={saucesRef} ingridients={sauces} />}
-            {<Container ref={mainRef}  ingridients={mains} />}
+            {<Container ref={bunsRef} ingredients={buns} />}
+            {<Container  ref={saucesRef} ingredients={sauces} />}
+            {<Container ref={mainRef}  ingredients={mains} />}
           </div>
         </div>
 

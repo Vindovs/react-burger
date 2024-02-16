@@ -14,7 +14,7 @@
    flex-wrap: wrap;
 }
 
-.ingridient
+.ingredient
 {
    cursor: pointer;
    flex-basis: calc(45% - 28px);

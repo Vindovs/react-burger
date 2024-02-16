@@ -4,7 +4,7 @@ import {SET_INGREDIENT} from '../../services/actions';
 import { useDrag } from 'react-dnd';
 import {DragnDropTypes} from '../../common';
 
-const ContainerIngredient = ({ item }) => {
+const ContainerIngredient = ({item, onClick}) => {
   const dispatch = useDispatch();
 
   const burgerConstructor = useSelector(store => store.burgerConstructor)
@@ -14,8 +14,6 @@ const ContainerIngredient = ({ item }) => {
     burgerConstructor.bun.filter(i => i._id === item._id).length 
     :
     burgerConstructor.body.filter(i => i._id === item._id).length;
-
-
 
   const [{ isDragging }, dragRef] = useDrag({
     type: (type === 'bun') ? DragnDropTypes.BUN : DragnDropTypes.INGREDIENT,
@@ -32,13 +30,13 @@ const ContainerIngredient = ({ item }) => {
       type: SET_INGREDIENT,
       payload: item
     });
-  
+    onClick();
   }
 
   return (
     <div ref={dragRef}
       onClick={setModalItem}
-      style={{ opacity }}
+      style={{ position: 'sticky' , opacity}} 
     >
       {!!count && <Counter count={count} size="default" extraClass="m-1" />}
       <img src={item.image} alt={item.name} />

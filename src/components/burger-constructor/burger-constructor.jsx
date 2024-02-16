@@ -28,7 +28,7 @@ function BurgerConstructor() {
   },
     [burgerConstructor]);
 
-  const dispach = useDispatch();
+  const dispatch = useDispatch();
 
   return (
     <div className={'mt-20 mr-2'}   >
@@ -42,9 +42,9 @@ function BurgerConstructor() {
             htmlType="button"
             type="primary"
             size="large"
-            disabled={!burgerConstructor.bun.length ? true : false}
+            disabled={ !burgerConstructor.bun.length }
             onClick={() => {
-              dispach(createOrder(burgerConstructor));
+              dispatch (createOrder(burgerConstructor));
               openModal();
             }}>Оформить заказ</Button>
         </div>

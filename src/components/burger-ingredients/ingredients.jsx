@@ -1,7 +1,7 @@
 import styles from '../burger-constructor/order/order.module.css'
 
 import { DataType } from '../../utils/types'
-const Ingridient = ({ ingredient }) => {
+const Ingredient = ({ ingredient }) => {
     return (
         <>
             <div >
@@ -39,8 +39,8 @@ const Ingridient = ({ ingredient }) => {
     );
 };
 
-Ingridient.propTypes = {
+Ingredient.propTypes = {
     ingredient: DataType
 };
 
-export default Ingridient;
+export default Ingredient;
