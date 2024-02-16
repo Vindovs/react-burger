@@ -1,46 +1,66 @@
-import React from 'react';
+import { useRef, useState} from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
 import PropTypes from 'prop-types';
 import styles from './burger-ingridients.module.css';
-import ContainerIngr from './container-ingr';
+import Container from './container';
 import { DataType } from '../../utils/types'
+import { useSelector } from 'react-redux';
 
-function BurgerIngredients({ data }) {
+function BurgerIngredients() {
 
-  const [current, setCurrent] = React.useState('bun')
+  const [current, setCurrent] = useState('bun')
+  const {data, dataRequested} = useSelector(store => store.data);
 
   const buns = data.filter(item => item.type === 'bun')
   const sauces = data.filter(item => item.type === 'sauce')
   const mains = data.filter(item => item.type === 'main')
-  const filteredData = data.filter(item => item.type === current)
-  console.log('filteredData :', filteredData)
+
+  const tabsRef = useRef(null);
+  const bunsRef = useRef(null);
+  const saucesRef = useRef(null);
+  const mainRef = useRef(null); 
+
+  const setTab = () => {
+
+    const tabBottomCoord = tabsRef.current.getBoundingClientRect().bottom;
+    const bunsTopCoord = bunsRef.current.getBoundingClientRect().top;
+    const saucesTopCoord = saucesRef.current.getBoundingClientRect().top;
+    const mainTopCoord = mainRef.current.getBoundingClientRect().top;
+
+    const currentTab = [{ tab: 'bun', value: Math.abs(bunsTopCoord - tabBottomCoord) },
+    { tab: 'sauce', value: Math.abs(saucesTopCoord - tabBottomCoord) },
+    { tab: 'main', value: Math.abs(mainTopCoord - tabBottomCoord) }].reduce((a, b) => a.value < b.value ? a : b)
+    setCurrent(currentTab.tab);
+}
+
   return (
+    <div>{ dataRequested && (
     <main style={{ gridArea: 'main', width: '75%' }}>
       <div className="ml-2">
         <h1 style={{ textAlign: 'start' }} className="mt-8 mb-5">Соберите бургер</h1>
         <div >
-          <div style={{ display: 'flex' }} className="mb-10">
-            <Tab value="bun" active={current === 'bun'} onClick={() => setCurrent('bun')}>
+          <div style={{ display: 'flex' }} className="mb-10" ref={tabsRef}>
+            <Tab value="bun" active={current === 'bun'}>
               Булки
             </Tab>
-            <Tab value="sauce" active={current === 'sauce'} onClick={() => setCurrent('sauce')}>
+            <Tab value="sauce" active={current === 'sauce'}>
               Соусы
             </Tab>
-            <Tab value="main" active={current === 'main'} onClick={() => setCurrent('main')}>
+            <Tab value="main" active={current === 'main'}>
               Начинка
             </Tab>
           </div>
         </div>
-        <div className={`${styles.scroll} custom-scroll`}   >
+        <div className={`${styles.scroll} custom-scroll`} onScroll={() => setTab()}  >
           <div className={styles.container}>
-            {<ContainerIngr ingridients={buns} />}
-            {<ContainerIngr ingridients={sauces} />}
-            {<ContainerIngr ingridients={mains} />}
+            {<Container ref={bunsRef} ingridients={buns} />}
+            {<Container  ref={saucesRef} ingridients={sauces} />}
+            {<Container ref={mainRef}  ingridients={mains} />}
           </div>
         </div>
 
       </div>
-    </main>
+    </main>)}</div>
   );
 }
 

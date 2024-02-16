@@ -12,6 +12,5 @@ export const DataType = proptypes.shape({
     image: proptypes.string,
     image_mobile: proptypes.string,
     image_large: proptypes.string,
-    __v: proptypes.number
-    
+    __v: proptypes.number    
  });
