@@ -1,0 +1,23 @@
+.scroll
+{
+   max-width: 1000px;
+   max-height: 400px;
+   display: flex;
+   flex-direction: column; 
+   overflow-y: auto;
+   gap: '28px'
+}
+
+.container
+{
+   display: flex;
+   flex-wrap: wrap;
+}
+
+.ingridient
+{
+   cursor: pointer;
+   flex-basis: calc(45% - 28px);
+   margin: 5px;
+   background: #131316;
+}

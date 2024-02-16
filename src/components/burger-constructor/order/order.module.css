@@ -1,0 +1,14 @@
+
+.closeIcon{
+   position: absolute;
+   top: 50px; 
+   right: 40px; 
+   cursor: pointer;
+}
+
+.item {
+   display: flex;
+   flex-direction: column;
+   margin: 10px;
+ }
+ 
