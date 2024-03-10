@@ -1,4 +1,4 @@
-import { useRef, useState} from 'react';
+import { useRef, useState } from 'react';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components'
 import PropTypes from 'prop-types';
 import styles from './burger-ingredients.module.css';
@@ -9,7 +9,7 @@ import { useSelector } from 'react-redux';
 function BurgerIngredients() {
 
   const [current, setCurrent] = useState('bun')
-  const {data, dataRequested} = useSelector(store => store.data);
+  const { data, dataRequested } = useSelector(store => store.data);
 
   const buns = data.filter(item => item.type === 'bun')
   const sauces = data.filter(item => item.type === 'sauce')
@@ -18,7 +18,7 @@ function BurgerIngredients() {
   const tabsRef = useRef(null);
   const bunsRef = useRef(null);
   const saucesRef = useRef(null);
-  const mainRef = useRef(null); 
+  const mainRef = useRef(null);
 
   const setTab = () => {
 
@@ -31,36 +31,36 @@ function BurgerIngredients() {
     { tab: 'sauce', value: Math.abs(saucesTopCoord - tabBottomCoord) },
     { tab: 'main', value: Math.abs(mainTopCoord - tabBottomCoord) }].reduce((a, b) => a.value < b.value ? a : b)
     setCurrent(currentTab.tab);
-}
+  }
 
   return (
-    <div>{ dataRequested && (
-    <main style={{ gridArea: 'main', width: '75%' }}>
-      <div className="ml-2">
-        <h1 style={{ textAlign: 'start' }} className="mt-8 mb-5">Соберите бургер</h1>
-        <div >
-          <div style={{ display: 'flex' }} className="mb-10" ref={tabsRef}>
-            <Tab value="bun" active={current === 'bun'}>
-              Булки
-            </Tab>
-            <Tab value="sauce" active={current === 'sauce'}>
-              Соусы
-            </Tab>
-            <Tab value="main" active={current === 'main'}>
-              Начинка
-            </Tab>
+    <div>{dataRequested && (
+      <main style={{ gridArea: 'main', width: '80%' }}>
+        <div className="ml-2">
+          <h1 style={{ textAlign: 'start' }} className="mt-8 mb-5">Соберите бургер</h1>
+          <div >
+            <div style={{ display: 'flex' }} className="mb-10" ref={tabsRef}>
+              <Tab value="bun" active={current === 'bun'}>
+                Булки
+              </Tab>
+              <Tab value="sauce" active={current === 'sauce'}>
+                Соусы
+              </Tab>
+              <Tab value="main" active={current === 'main'}>
+                Начинка
+              </Tab>
+            </div>
           </div>
-        </div>
-        <div className={`${styles.scroll} custom-scroll`} onScroll={() => setTab()}  >
-          <div className={styles.container}>
-            {<Container ref={bunsRef} ingredients={buns} />}
-            {<Container  ref={saucesRef} ingredients={sauces} />}
-            {<Container ref={mainRef}  ingredients={mains} />}
+          <div className={`${styles.scroll} custom-scroll`} onScroll={() => setTab()}  >
+            <div className={styles.container}>
+              {<Container ref={bunsRef} ingredients={buns} />}
+              {<Container ref={saucesRef} ingredients={sauces} />}
+              {<Container ref={mainRef} ingredients={mains} />}
+            </div>
           </div>
-        </div>
 
-      </div>
-    </main>)}</div>
+        </div>
+      </main>)}</div>
   );
 }
 

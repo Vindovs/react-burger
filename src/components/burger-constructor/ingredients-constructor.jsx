@@ -2,10 +2,10 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useDrop } from 'react-dnd';
 import { DragnDropTypes } from '../../common';
 import { ConstructorElement } from '@ya.praktikum/react-developer-burger-ui-components';
-import {ADD_INGREDIENT, DELETE_INGREDIENT, RESET_INGREDIENT} from '../../services/actions/index';
+import { ADD_INGREDIENT, DELETE_INGREDIENT, RESET_INGREDIENT } from '../../services/actions/index';
 import IngredientElement from './ingredient-element.jsx'
 import { useCallback, useEffect } from 'react'
-import {v4  as uuidv4} from 'uuid';
+import { v4 as uuidv4 } from 'uuid';
 import styles from './burger-constructor.module.css';
 
 const IngredientsConstructor = () => {
@@ -30,13 +30,13 @@ const IngredientsConstructor = () => {
             isOver: monitor.isOver()
         })
     });
-    
+
     const deleteIngredient = useCallback((index) => {
         dispatch({
             type: DELETE_INGREDIENT,
             index: index
-            })
-        }, []);
+        })
+    }, []);
 
     const handleDragItem = useCallback((dragIndex, hoverIndex) => {
         const newBody = [...body];
@@ -54,7 +54,7 @@ const IngredientsConstructor = () => {
     }, [body]);
 
     const renderItem = useCallback((item, index) => {
-        const { idUniq, ...ingredient} = item;
+        const { idUniq, ...ingredient } = item;
         return (<div >
             <IngredientElement key={idUniq}
                 ingredient={ingredient}
@@ -63,8 +63,8 @@ const IngredientsConstructor = () => {
                 moveIngredient={handleDragItem} /></div>
         )
     }, [body])
-   
-// Прячем изображения без src ¯\_(ツ)_/¯
+
+    // Прячем изображения без src ¯\_(ツ)_/¯
     useEffect(() => {
         const images = document.querySelectorAll('img.constructor-element__image');
         images.forEach(img => {
@@ -78,15 +78,15 @@ const IngredientsConstructor = () => {
     }, []);
 
     return (
-    <div className={`${styles.scroll} custom-scroll p-5`}  ref={dropRef} >
-        {body.length !== 0 ? (
-            body.map((item, index) => {
-                return (renderItem(item, index))
-            }
-            )) : (
-                <ConstructorElement text={'Выберите начинку'} thumbnail={''}/>
+        <div className={`${styles.scroll} custom-scroll p-5`} ref={dropRef} >
+            {body.length !== 0 ? (
+                body.map((item, index) => {
+                    return (renderItem(item, index))
+                }
+                )) : (
+                <ConstructorElement text={'Выберите начинку'} thumbnail={''} />
             )}
-    </div>);
+        </div>);
 }
 
 export default IngredientsConstructor;

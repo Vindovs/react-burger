@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import { CloseIcon,CheckMarkIcon  } from '@ya.praktikum/react-developer-burger-ui-components'
 import styles from './order.module.css'
 

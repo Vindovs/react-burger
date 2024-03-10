@@ -6,8 +6,7 @@ import {SET_BUNS_CONSTRUCTOR} from '../../services/actions/index';
 
 const BunsConstructor = ({children}) => {
     const burgerBun = useSelector(store => store.burgerConstructor.bun);
-    const ingredients = useSelector(store => store.data.data);
-    
+    const ingredients = useSelector(store => store.data.data);    
 
     const dispatch = useDispatch();
 

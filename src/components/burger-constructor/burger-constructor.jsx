@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components'
-
 import Modal from '../modal/modal';
 import Order from './order/order';
 import BunsConstructor from './buns-constructor';

@@ -21,3 +21,8 @@
    margin: 5px;
    background: #131316;
 }
+
+.link{
+   color: inherit;
+   text-decoration: none;
+ }
