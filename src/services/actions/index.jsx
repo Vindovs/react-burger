@@ -1,4 +1,5 @@
 import { url } from '../../common';
+import {checkRes} from '../actions/auth'
 export const GET_INGREDIENTS_REQUEST = 'GET_INGREDIENTS_REQUEST';
 export const GET_INGREDIENTS_REQUEST_SUCCESS = 'GET_INGREDIENTS_REQUEST_SUCCESS';
 export const GET_INGREDIENTS_REQUEST_FAILED = 'GET_INGREDIENTS_REQUEST_FAILED';
@@ -39,11 +40,7 @@ export const dataFetch = () => {
 
 function handlRequest(url, options = {}) {
     return fetch(url, options)
-        .then(res => {
-            if (!res.ok)
-                return console.log('Error:' + res.status);
-            return res.json();
-        })
+        .then(checkRes)
 }
 
 export const createOrder = (burger) => {

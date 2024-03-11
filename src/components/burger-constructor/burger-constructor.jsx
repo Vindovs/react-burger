@@ -6,14 +6,19 @@ import Order from './order/order';
 import BunsConstructor from './buns-constructor';
 import IngredientsConstructor from './ingredients-constructor';
 import { createOrder } from '../../services/actions';
+import { useNavigate } from 'react-router-dom';
 
 function BurgerConstructor() {
+  const navigate = useNavigate();
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [sum, setSum] = useState(0);
   const openModal = () => {
     setIsModalOpen(true);
   };
+
   const burgerConstructor = useSelector(store => store.burgerConstructor)
+  const user = useSelector(store => store.user.user)
 
   const closeModal = () => {
     setIsModalOpen(false);
@@ -29,6 +34,17 @@ function BurgerConstructor() {
 
   const dispatch = useDispatch();
 
+  const createOrderHandle = () => {
+
+    if( !user ){
+        navigate('/login');
+        return;
+    }
+
+    dispatch(createOrder(burgerConstructor));
+    openModal();
+}
+
   return (
     <div className={'mt-20 mr-2'}   >
       <div>
@@ -42,10 +58,9 @@ function BurgerConstructor() {
             type="primary"
             size="large"
             disabled={ !burgerConstructor.bun.length }
-            onClick={() => {
-              dispatch (createOrder(burgerConstructor));
-              openModal();
-            }}>Оформить заказ</Button>
+            onClick={
+              createOrderHandle
+            }>Оформить заказ</Button>
         </div>
         {isModalOpen && (
           <Modal onClose={closeModal}>

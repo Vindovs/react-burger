@@ -216,6 +216,6 @@ export function handleSighInRequest(url, options = {}) {
         })
 }
 
-const checkRes = (res) => {
+export const checkRes = (res) => {
     return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
 };

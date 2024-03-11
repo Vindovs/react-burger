@@ -81,10 +81,14 @@ const IngredientsConstructor = () => {
         <div className={`${styles.scroll} custom-scroll p-5`} ref={dropRef} >
             {body.length !== 0 ? (
                 body.map((item, index) => {
-                    return (renderItem(item, index))
+                    return (
+                        <div key={index}>
+                          {renderItem(item, index)}
+                        </div>
+                      );
                 }
                 )) : (
-                <ConstructorElement text={'Выберите начинку'} thumbnail={''} />
+                <ConstructorElement key="placeholder" text={'Выберите начинку'} thumbnail={''} />
             )}
         </div>);
 }

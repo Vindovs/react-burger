@@ -1,15 +1,18 @@
-import './App.css';
-import Header from './components/header/header'
+
+import Header from '../header/header'
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { dataFetch } from './services/actions/index';
+import { dataFetch } from '../../services/actions/index';
 import { Routes, Route, useLocation, useNavigate} from 'react-router-dom';
-import { Home, ForgotPassword, Ingredients, Login, Profile, Register, ResetPassword, ProfileInputs } from './pages'
-import { ProtectedRouteElement } from './components/protected-route-element/protected-route-element';
-import { getUserInfo } from './services/actions/auth';
-import { History } from './pages/history';
-import Modal from './components/modal/modal';
-import Ingredient from './components/burger-ingredients/ingredient';
+import { Home, ForgotPassword, Ingredients, Login, Profile, Register, ResetPassword, ProfileInputs } from '../../pages'
+import { ProtectedRouteElement } from '../protected-route-element/protected-route-element';
+import { getUserInfo } from '../../services/actions/auth';
+import { History } from '../../pages/history';
+import Modal from '../modal/modal';
+import Ingredient from '../burger-ingredients/ingredient';
+import styles from './app.module.css';
+
+
 function App() {
 
   const dispatch = useDispatch();
@@ -24,9 +27,9 @@ function App() {
   }, [] )
 
   return (
-    <main className="App container">
+    <div className={styles.App}>
       <Header />
-      {
+      <main className={styles.container} >
         <div>
         <Routes location={state?.curLocation || location}>
           <Route path='/' element={ <Home /> } />          
@@ -47,8 +50,8 @@ function App() {
             </Routes>)
         }
         </div>
-      }
-    </main>
+      </main>
+    </div>
   );
 }
 
