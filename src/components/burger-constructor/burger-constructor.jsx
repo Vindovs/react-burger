@@ -1,47 +1,85 @@
-import React, { useState } from 'react';
-import { ConstructorElement, CurrencyIcon, Button,CheckMarkIcon  } from '@ya.praktikum/react-developer-burger-ui-components'
-import  data  from '../../utils/data'
-import styles from './burger-constructor.module.css';
+import { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components'
 import Modal from '../modal/modal';
 import Order from './order/order';
+import BunsConstructor from './buns-constructor';
+import IngredientsConstructor from './ingredients-constructor';
+import { createOrder } from '../../services/actions';
+import { useNavigate } from 'react-router-dom';
 
 function BurgerConstructor() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [sum, setSum] = useState(0);
   const openModal = () => {
-    console.log(1);
     setIsModalOpen(true);
   };
 
+  const burgerConstructor = useSelector(store => store.burgerConstructor)
+  const user = useSelector(store => store.user.user)
+
   const closeModal = () => {
-    console.log(2);
     setIsModalOpen(false);
   };
 
-    return (
-      <div  className={`mt-20 mr-2`}   >
-           <div className={`${styles.scroll} custom-scroll`} style={{gridArea:'sidebar', display: 'flex', flexDirection: 'column', gap: '10px',width: '110%'}}>
-            {data.map((item) =>
-                <ConstructorElement
-                key={item.key}
-                    isLocked = {false}
-                    text = {item.name}
-                    price ={item.price}
-                    thumbnail = {item.image}
-              />)}
-              </div>  
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }} className="mt-10 ">
-              <div className="mr-10 " style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <p style={{ fontSize: '60px' }} className="text text_type_digits-default ">789</p>
-                <CurrencyIcon  type="primary"/>  
-                </div>          
-              <Button htmlType="button" type="primary" size="large" onClick={openModal} >
-                Оформить заказ
-              </Button>
-              </div>
-             {isModalOpen && (<Modal onClose={closeModal} ><Order/></Modal>)}
+  useEffect(() => {
+    const burgerBodyAmount = burgerConstructor.body.map(i => i.price).reduce((sum, price) => sum + price, 0);
+    const defaultBunsAmount = burgerConstructor.bun.length ? 2 * burgerConstructor.bun[0].price : 0;
+
+    setSum(defaultBunsAmount + burgerBodyAmount);
+  },
+    [burgerConstructor]);
+
+  const dispatch = useDispatch();
+
+  const createOrderHandle = () => {
+
+    if( !user ){
+        navigate('/login');
+        return;
+    }
+
+    dispatch(createOrder(burgerConstructor));
+    openModal();
+}
+
+  return (
+    <div className={'mt-20 mr-2'}   >
+      <div>
+        <BunsConstructor>
+          <IngredientsConstructor />
+        </BunsConstructor>
+        <div className={'p-10'} style={{ display: 'flex', alignItems: 'center' }}>
+          <TotalPrice price={sum} />
+          <Button
+            htmlType="button"
+            type="primary"
+            size="large"
+            disabled={ !burgerConstructor.bun.length }
+            onClick={
+              createOrderHandle
+            }>Оформить заказ</Button>
         </div>
-      )
-  }
+        {isModalOpen && (
+          <Modal onClose={closeModal}>
+            <Order />
+          </Modal>
+        )}
+      </div>
+      {isModalOpen && (<Modal onClose={closeModal} ><Order /></Modal>)}
+    </div>
+  )
+}
+
+const TotalPrice = ({ price }) => {
+  return (
+    <div className={'mr-5'} style={{ display: 'flex', alignItems: 'center' }}>
+      <p className="text text_type_digits-medium mr-3">{price}</p>
+      <CurrencyIcon />
+    </div>
+  );
+}
 
 export default BurgerConstructor;
