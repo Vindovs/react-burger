@@ -9,6 +9,9 @@ import {
 
 } from "../actions/auth";
 
+import { Action } from '@reduxjs/toolkit';
+import { TUserInfo } from '../../utils/types';
+
 const initialState = {
     user: null,
     errorMessage: '',
@@ -18,7 +21,13 @@ const initialState = {
     isAuthChecked: false
 };
 
-const userReducer = (state = initialState, action) => {
+interface ExtendedAction extends Action {
+    payload?: {
+      user?: TUserInfo;
+    };
+  }
+
+const userReducer = (state = initialState, action : ExtendedAction) => {
     switch (action.type) {
 
         case getUserInfo.fulfilled.type:
@@ -37,7 +46,7 @@ const userReducer = (state = initialState, action) => {
         case updateUserInfo.fulfilled.type:
             return {
                 ...state,
-                user: action.payload.user || state.user
+                user: action.payload &&  action.payload.user || state.user
             };
 
         case loginUser.pending.type:
@@ -54,7 +63,7 @@ const userReducer = (state = initialState, action) => {
 
         case loginUser.rejected.type:
             return {
-                ...state,
+                ...state,//@ts-ignore
                 errorMessage: action.error.message
             };
 
@@ -81,7 +90,7 @@ const userReducer = (state = initialState, action) => {
         case createUser.rejected.type:
             return {
                 ...state,
-                createUserPending: false,
+                createUserPending: false,//@ts-ignore
                 errorMessage: action.error.message
             };
 

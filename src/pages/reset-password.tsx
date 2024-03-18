@@ -6,7 +6,7 @@ import { resetPassword } from '../services/actions/auth';
 
 const ResetPassword = () => {
     const dispatch = useDispatch();
-
+//@ts-ignore
     const { resetPasswordEmailSent, passwordIsSet } = useSelector(store => store.user);
 
     const { values, handleChange } = useForm({
@@ -14,8 +14,9 @@ const ResetPassword = () => {
         code: ''
     });
 
-    const handleSubmit = e => {
-        e.preventDefault();
+    const handleSubmit = (e : React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault(); 
+        //@ts-ignore
         dispatch(resetPassword({ password: values.newPassword, token: values.code }));
     }
 
@@ -33,7 +34,10 @@ const ResetPassword = () => {
                 placeholder='Введите код из письма'
                 value={values.code}
                 name='code'
-                onChange={handleChange} />
+                onChange={handleChange} 
+                onPointerEnterCapture={() => { }}
+                onPointerLeaveCapture={() => { }} 
+                />                
             <Button
                 htmlType='submit'
                 disabled={!values.newPassword || !values.code}>Сохранить</Button>

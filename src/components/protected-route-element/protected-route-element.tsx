@@ -1,10 +1,15 @@
 import { Navigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { FC } from "react";
 
-export const ProtectedRouteElement = ({ noAuth = false, component }) => {
+interface IProtectedRouteElement{
+    noAuth?: boolean;
+    component: any;
+}
 
-    const user = useSelector(store => store.user.user);
-    
+export const ProtectedRouteElement : FC<IProtectedRouteElement> = ({ noAuth = false, component }) => {
+// @ts-ignore
+    const user = useSelector(store => store.user.user);    
     const location = useLocation();
 
     if (!noAuth && !user) {

@@ -2,13 +2,24 @@ import {ADD_INGREDIENT, DELETE_INGREDIENT,
     SET_BUNS_CONSTRUCTOR, REMOVE_INGREDIENTS,
     RESET_INGREDIENT
 } from '../actions/index';
+import { TIngredient } from '../../utils/types';
 
-const initialState = {
+const initialState : IBurgerConstructorState  = {
     bun: [],
     body: [],
 }
 
-const BurgerConstructorReducer = (state = initialState, action) => {
+interface IBurgerConstructorAction{
+    type: typeof ADD_INGREDIENT | typeof DELETE_INGREDIENT | typeof SET_BUNS_CONSTRUCTOR | typeof REMOVE_INGREDIENTS | typeof RESET_INGREDIENT,
+    payload: Array<TIngredient> | TIngredient | null | undefined;
+    index: number;
+}
+interface IBurgerConstructorState{
+    bun: Array<TIngredient> | null;
+    body: Array<TIngredient> 
+}
+
+const BurgerConstructorReducer  = (state = initialState, action : IBurgerConstructorAction) => {
     switch(action.type){
         case ADD_INGREDIENT:{
             return {

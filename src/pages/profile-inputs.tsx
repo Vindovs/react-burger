@@ -1,11 +1,12 @@
-import { Input, EmailInput, PasswordInput, Button } from "@ya.praktikum/react-developer-burger-ui-components";
+import {  EmailInput, PasswordInput, Button, Input} from "@ya.praktikum/react-developer-burger-ui-components";
 import { useSelector, useDispatch } from "react-redux";
-import { useState } from 'react';
+import { useState, ChangeEvent } from 'react';
 import { updateUserInfo } from "../services/actions/auth";
 import '../index.css';
+import { TUserInfo } from '../utils/types';
 
 export const ProfileInputs = () => {
-
+//@ts-ignore
     const user = useSelector(store => store.user.user);
     const dispatch = useDispatch();
 
@@ -15,10 +16,10 @@ export const ProfileInputs = () => {
         password: ''
     });
 
-    const handleSubmit = e => {
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement> ) => {
         e.preventDefault();
 
-        let userInfo = {};
+        let userInfo : TUserInfo  = {};
 
         if (values.name !== user.name)
             userInfo.name = values.name;
@@ -28,7 +29,7 @@ export const ProfileInputs = () => {
 
         if (!!values.password)
             userInfo.password = values.password;
-
+//@ts-ignore
         dispatch(updateUserInfo(userInfo));
     }
 
@@ -46,14 +47,14 @@ export const ProfileInputs = () => {
         <form onReset={handleReset} onSubmit={handleSubmit}>
             <Input
                 placeholder="Имя"
-                icon="EditIcon"
                 extraClass="mb-2"
                 name="name"
                 value={values.name}
                 onChange={handleChange}
+                onPointerEnterCapture={() => { }} // без этого не работает
+                onPointerLeaveCapture={() => { }} // -//-//-
             />
             <EmailInput
-                icon="EditIcon"
                 extraClass="mb-2"
                 name='email'
                 value={values.email}
@@ -79,13 +80,23 @@ export const ProfileInputs = () => {
     </div>);
 }
 
-export const useForm = (props) => {
+interface IInputsProps{
+    [name: string]: string;
+}
+
+interface IUseForm{
+    values: {[tkу in keyof IInputsProps]: string};
+    handleChange: (event: ChangeEvent<HTMLInputElement>) => void;
+    setValues: (props: {[tkу in keyof IInputsProps]: string}) => void;
+}
+
+export const useForm = (props : IInputsProps) : IUseForm  => {
 
     const [values, setValues] = useState({
         ...props
     });
 
-    const handleChange = (event) => {
+    const handleChange = (event : ChangeEvent<HTMLInputElement>) => {
         const { value, name } = event.target;
         setValues({ ...values, [name]: value });
     }

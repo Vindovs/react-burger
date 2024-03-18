@@ -3,19 +3,30 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useDrop } from 'react-dnd';
 import { DragnDropTypes }  from '../../common'
 import {SET_BUNS_CONSTRUCTOR} from '../../services/actions/index';
+import { TIngredient } from '../../utils/types';
+import { FC } from 'react';
 
-const BunsConstructor = ({children}) => {
+interface IBunsConstructor {
+    children: React.ReactNode
+};
+interface IDraggingItem {
+    _id: string
+}
+
+const BunsConstructor: FC<IBunsConstructor> = ( { children } ) => {
+     // @ts-ignore
     const burgerBun = useSelector(store => store.burgerConstructor.bun);
+     // @ts-ignore
     const ingredients = useSelector(store => store.data.data);    
 
     const dispatch = useDispatch();
 
     const [{isOver},dropRef] = useDrop({
         accept: DragnDropTypes.BUN,
-        drop(item){
+        drop(item: IDraggingItem){
             dispatch({
                 type: SET_BUNS_CONSTRUCTOR,
-                payload: ingredients.find(i => i._id === item._id)
+                payload: ingredients.find((i: TIngredient)  => i._id === item._id)
             });
          },
         collect: monitor => ({
@@ -39,6 +50,7 @@ const BunsConstructor = ({children}) => {
                     isLocked = {true}
                     text = {'Выберите булку'}
                     thumbnail = {''}
+                    price={0}
                     />
             )}
             {children}
@@ -55,6 +67,7 @@ const BunsConstructor = ({children}) => {
                         isLocked = {true}
                         text = {'Выберите булку'}
                         thumbnail={''}
+                        price={0}
                         />
                 )}
         </div>

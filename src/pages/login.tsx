@@ -2,7 +2,7 @@ import { EmailInput, PasswordInput, Button } from '@ya.praktikum/react-developer
 import { useSelector, useDispatch } from "react-redux";
 import { loginUser } from "../services/actions/auth";
 import { useForm } from './profile-inputs';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, FC } from 'react';
 import { Link } from 'react-router-dom';
 
 const Login = () => {
@@ -11,13 +11,13 @@ const Login = () => {
         email: '',
         password: ''
     });
-
+//@ts-ignore
     const errorMessage = useSelector(store => store.user.errorMessage);
     const dispatch = useDispatch();
 
-    const loginSubmit = (e) => {
+    const loginSubmit = (e : React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-
+//@ts-ignore
         dispatch(loginUser({
             email: values.email,
             password: values.password
@@ -56,8 +56,11 @@ const Login = () => {
     </div>);
 }
 
-export const ErrorMessage = ({ message }) => {
-    const [visible, setVisible] = useState(false);
+interface IErrorMessage {
+    message: string;
+}
+export const ErrorMessage : FC<IErrorMessage> = ({ message }) => {
+    const [visible, setVisible] = useState<boolean>(false);
 
     useEffect(() => {
         if (!message) {
@@ -73,9 +76,9 @@ export const ErrorMessage = ({ message }) => {
         return () => clearTimeout(timer);
     }, [message]);
 
-    return (visible && (<div className='p-5'>
+    return (visible ? (<div className='p-5'>
         <p className='text text_type_main text_color_inactive'>{message}</p>
-    </div>));
+    </div>): <> </>);
 }
 
 export default Login;

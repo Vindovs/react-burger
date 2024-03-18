@@ -17,11 +17,11 @@ const ForgotPassword = () => {
         dispatch({ type: 'resetPasswordResponse' });
     }, [])
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    const handleSubmit = (e : React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault(); //@ts-ignore
         dispatch(tryResetPassword(values.email));
     }
-
+    //@ts-ignore
     const { resetPasswordEmailSent } = useSelector(store => store.user);
     useEffect(() => {
 
