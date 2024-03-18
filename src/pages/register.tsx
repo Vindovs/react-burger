@@ -3,7 +3,8 @@ import { Link, Navigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { createUser } from '../services/actions/auth';
 import { useForm } from './profile-inputs';
-import { ErrorMessage } from '../pages/login';
+import { ErrorMessage } from './login';
+import { TUserInfo } from '../utils/types';
 
 const Register = () => {
     const { values, handleChange } = useForm({
@@ -13,16 +14,19 @@ const Register = () => {
     });
 
     const dispatch = useDispatch();
+    //@ts-ignore
     const { user, errorMessage } = useSelector(store => store.user);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = (e : React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        dispatch(createUser({
+        let userInfo: TUserInfo = {
             name: values.userName,
             email: values.userEmail,
             password: values.userPassword
-        }));
+        };
+        //@ts-ignore
+        dispatch(createUser(userInfo));
     }
 
     return (<div>
@@ -35,6 +39,8 @@ const Register = () => {
                 value={values.userName}
                 onChange={handleChange}
                 name='userName'
+                onPointerEnterCapture={() => { }} // без этого ошибка Input
+                onPointerLeaveCapture={() => { }} // -//-//-
             />
             <EmailInput
                 extraClass='m-5'

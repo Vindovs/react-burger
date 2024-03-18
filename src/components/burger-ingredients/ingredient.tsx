@@ -2,16 +2,18 @@ import styles from '../burger-constructor/order/order.module.css'
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { useMemo } from 'react';
+import { TIngredient, TRootState } from '../../utils/types';
+
 const Ingredient = () => {
 
-    const { data } = useSelector((store) => store.data);
+    const { data } = useSelector((store: TRootState) => store.data);
 
     const { id } = useParams();
 
-    const item = useMemo(() => data.find(i => i._id === id), [data, id]);
+    const item = useMemo(() => data.find((i: TIngredient) => i._id === id), [data, id]);
 
-    return (item &&
-        <>
+    return (item ?
+        (<>
             <div >
                 <div>
                     <div className="pt-10">
@@ -43,7 +45,7 @@ const Ingredient = () => {
                     </div>
                 </div>
             </div>
-        </>
+        </>) : null
     );
 };
 

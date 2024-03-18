@@ -11,11 +11,9 @@ import { History } from '../../pages/history';
 import Modal from '../modal/modal';
 import Ingredient from '../burger-ingredients/ingredient';
 import styles from './app.module.css';
-
-
 function App() {
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<any>();
   const navigate = useNavigate();
 
   const location = useLocation();
@@ -45,7 +43,7 @@ function App() {
         {
             state?.curLocation && (<Routes>
               <Route path='/ingredients/:id' element={<Modal onClose={() => { navigate(-1); }} >
-                <Ingredient />
+              <Ingredient />
               </Modal>} />
             </Routes>)
         }

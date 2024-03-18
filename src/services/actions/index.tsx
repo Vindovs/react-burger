@@ -1,5 +1,6 @@
 import { url } from '../../common';
-import {checkRes} from '../actions/auth'
+import {checkRes} from './auth'
+import { TIngredientsResponse, TIngredient } from '../../utils/types';
 export const GET_INGREDIENTS_REQUEST = 'GET_INGREDIENTS_REQUEST';
 export const GET_INGREDIENTS_REQUEST_SUCCESS = 'GET_INGREDIENTS_REQUEST_SUCCESS';
 export const GET_INGREDIENTS_REQUEST_FAILED = 'GET_INGREDIENTS_REQUEST_FAILED';
@@ -15,13 +16,13 @@ export const CREATE_ORDER_REQUEST_SUCCESS = "CREATE_ORDER_REQUEST_SUCCESS";
 export const CREATE_ORDER_REQUEST_FAIL = "CREATE_ORDER_REQUEST_FAIL";
 
 
-export const dataFetch = () => {
+export const dataFetch = () => { //@ts-ignore
     return function (dispatch) {
         dispatch({
             type: GET_INGREDIENTS_REQUEST
         });
 
-        handlRequest(url + '/api/ingredients')
+        handlRequest<TIngredientsResponse>(url + '/api/ingredients')
             .then(res => {
                 dispatch({
                     type: GET_INGREDIENTS_REQUEST_SUCCESS,
@@ -38,12 +39,26 @@ export const dataFetch = () => {
     }
 }
 
-function handlRequest(url, options = {}) {
+function handlRequest<T>( url: string, options : RequestInit = {} ) : Promise<T> {
     return fetch(url, options)
-        .then(checkRes)
+        .then(checkReponse)
+        .then(data => {
+            return data;
+        })
 }
 
-export const createOrder = (burger) => {
+const checkReponse = (res: Response) : Promise<any> => {
+    return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
+};
+
+export interface IBurgerConstructor{
+    
+    bun: Array<TIngredient>
+    body: Array<TIngredient>
+}
+
+export const createOrder = (burger: IBurgerConstructor) => {
+    //@ts-ignore
     return function (dispatch) {
         dispatch({
             type: CREATE_ORDER_REQUEST

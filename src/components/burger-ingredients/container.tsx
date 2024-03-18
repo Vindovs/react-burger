@@ -2,14 +2,16 @@ import React, { useState } from 'react';
 import Modal from '../modal/modal'
 import Ingredient from './ingredient'
 import ContainerIngredient from './container-ingredient'
-import { DataType } from '../../utils/types'
-import PropTypes from 'prop-types';
+import { TIngredient } from '../../utils/types';
 
-const Container = React.forwardRef(({ ingredients }, ref) => {
+interface IContainerProps {
+  ingredients: TIngredient[];
+}
+const Container = React.forwardRef<HTMLDivElement, IContainerProps>(({ ingredients }, ref) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedIngredient, setSelectedIngredient] = useState(null);
+  const [selectedIngredient, setSelectedIngredient] = useState<TIngredient | null>(null);
 
-  const openModal = (item) => {
+  const openModal = (item : TIngredient) => {
     setSelectedIngredient(item);
     setIsModalOpen(true);
 
@@ -25,13 +27,10 @@ const Container = React.forwardRef(({ ingredients }, ref) => {
           <ContainerIngredient key={item._id} item={item} onClick={() => openModal(item)} />
         )}
       </div>
-      {isModalOpen && (<Modal onClose={closeModal} ><Ingredient ingredient={selectedIngredient} /></Modal>)}
+      {isModalOpen && selectedIngredient && (<Modal onClose={closeModal} ><Ingredient /></Modal>)}
     </div>
   );
 })
 
-Container.propTypes = {
-  ingredients: PropTypes.arrayOf(DataType)
-};
 
 export default Container;

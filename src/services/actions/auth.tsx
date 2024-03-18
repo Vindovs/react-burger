@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { url } from '../../common';
+import { TResponse, TUserLogInResponse } from "../../utils/types";
 
 export const getUserInfo = createAsyncThunk(
     "auth/getUserInfo",
@@ -27,7 +28,7 @@ export const createUser = createAsyncThunk(
     "auth/createUser",
     async (userCredentials) => {
 
-        const request = await handleRequest(url + '/api/auth/register', {
+        const request = await handleRequest<TUserLogInResponse>(url + '/api/auth/register', {
 
             method: "POST",
             headers: {
@@ -37,8 +38,9 @@ export const createUser = createAsyncThunk(
             body: JSON.stringify(userCredentials)
         })
             .then(res => {
+                let accessToken : string = res.accessToken.split("Bearer ").pop() || ''
                 localStorage.setItem("refreshToken", res.refreshToken);
-                localStorage.setItem("accessToken", res.accessToken.split("Bearer ").pop());
+                localStorage.setItem("accessToken", accessToken);
 
                 return res.user;
             });
@@ -52,7 +54,7 @@ export const tryResetPassword = createAsyncThunk(
     async (email) => {
 
         const requestBody = { email };
-        return await handleRequest(url + '/api/password-reset', {
+        return await handleRequest<TResponse>(url + '/api/password-reset', {
 
             method: "POST",
             headers: {
@@ -68,7 +70,7 @@ export const resetPassword = createAsyncThunk(
     "auth/resetPassword",
     async (requestBody) => {
 
-        return await handleRequest(url + '/api/password-reset/reset', {
+        return await handleRequest<TResponse>(url + '/api/password-reset/reset', {
 
             method: "POST",
             headers: {
@@ -103,7 +105,7 @@ export const loginUser = createAsyncThunk(
     "auth/loginUser",
     async (userCredentials) => {
 
-        const request = await handleRequest(url + '/api/auth/login', {
+        const request = await handleRequest<TUserLogInResponse>(url + '/api/auth/login', {
 
             method: "POST",
             headers: {
@@ -113,9 +115,10 @@ export const loginUser = createAsyncThunk(
             body: JSON.stringify(userCredentials)
         })
             .then(res => {
+                let accessToken : string = res.accessToken.split("Bearer ").pop() || ''
 
                 localStorage.setItem("refreshToken", res.refreshToken);
-                localStorage.setItem("accessToken", res.accessToken.split("Bearer ").pop());
+                localStorage.setItem("accessToken", accessToken);
 
                 return res.user;
             })
@@ -127,7 +130,7 @@ export const loginUser = createAsyncThunk(
 export const logoutUser = createAsyncThunk(
     "auth/logout",
     async () => {
-        const request = await handleRequest(url + '/api/auth/logout', {
+        const request = await handleRequest<TResponse>(url + '/api/auth/logout', {
 
             method: "POST",
             headers: {
@@ -151,7 +154,7 @@ export const logoutUser = createAsyncThunk(
     }
 )
 
-export function handleRequest(url, options = {}) {
+export function handleRequest<T>(url:string, options = {}) : Promise<T> {
     return fetch(url, options)
         .then(checkRes)
         .then(data => {
@@ -161,13 +164,13 @@ export function handleRequest(url, options = {}) {
         })
 }
 
-export const fetchAndRefresh = async (url, options) => {
+export const fetchAndRefresh = async (url:string, options :any) => {
     try {
         const res = await fetch(url, options);
 
         return await checkRes(res);
     }
-    catch (err) {
+    catch (err : string | any) {
         if (err.message === "err") {
 
             const refreshData = await refreshToken();
@@ -181,7 +184,7 @@ export const fetchAndRefresh = async (url, options) => {
     }
 }
 
-export const refreshToken = async () => {
+export const refreshToken = async () : Promise <any> => {
     return await fetch(url + '/api/auth/token', {
         method: "POST",
         headers: {
@@ -205,7 +208,7 @@ export const refreshToken = async () => {
         })
 }
 
-export function handleSighInRequest(url, options = {}) {
+export function handleSighInRequest(url : string, options = {}) {
     return fetch(url, options)
         .then(checkRes)
         .then(data => {
@@ -216,6 +219,6 @@ export function handleSighInRequest(url, options = {}) {
         })
 }
 
-export const checkRes = (res) => {
+export const checkRes = (res : Response) : Promise<any>  => {
     return res.ok ? res.json() : res.json().then((err) => Promise.reject(err));
 };
